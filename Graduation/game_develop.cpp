@@ -67,7 +67,7 @@ int game_develop(){
 				temp_list.push_back(child);
 			}
 		}
-		listOfBunny.splice(temp_list.end(), temp_list);	//append the temp list to the main bunnies list.
+		listOfBunny.splice(listOfBunny.end(), temp_list);	//append the temp list to the main bunnies list.
 	}
 
 	return 0;

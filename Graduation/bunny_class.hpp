@@ -21,7 +21,7 @@ private:
 	std::string m_colour{};
 	int m_age{0};
 	std::string m_name{};
-	bool m_radioactivem_mutantm_vampirem_bunny{};
+	bool m_radioactive_mutant_vampire_bunny{};
 public:
 	bunny();
 	bunny(const bunny& other);
