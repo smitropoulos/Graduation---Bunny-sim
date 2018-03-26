@@ -1,13 +1,13 @@
 //
-//  bunny_class.hpp
+//  bunnym_class.hpp
 //  Graduation
 //
 //  Created by Stefanos Mitropoulos on 26/03/2018.
 //  Copyright © 2018 Stefanos Mitropoulos. All rights reserved.
 //
 
-#ifndef bunny_class_hpp
-#define bunny_class_hpp
+#ifndef bunny_classm_hpp
+#define bunny_classm_hpp
 
 #include <stdio.h>
 #include <iostream>
@@ -17,11 +17,11 @@
 class bunny
 {
 private:
-	std::string _sex{};
-	std::string _colour{};
-	int _age{0};
-	std::string _name{};
-	bool _radioactive_mutant_vampire_bunny{};
+	std::string m_sex{};
+	std::string m_colour{};
+	int m_age{0};
+	std::string m_name{};
+	bool m_radioactivem_mutantm_vampirem_bunny{};
 public:
 	bunny();
 	bunny(const bunny& other);
@@ -38,4 +38,4 @@ public:
 
 };
 
-#endif /* bunny_class_hpp */
+#endif /* bunny_classm_hpp */

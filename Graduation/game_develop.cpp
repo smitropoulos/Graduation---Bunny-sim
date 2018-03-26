@@ -11,6 +11,13 @@
 bunny bunnyReproduce(bunny& female){
 	bunny child;
 	child.setColour(female.getColour());
+	if (!child.evilBunny()){
+		std::cout<<"Aah! Newborn "<<std::flush;
+		child.print();
+	}else{
+		std::cout<<"THE DEVIL! "<<std::flush;
+		child.print();
+	}
 	return child;
 }
 
@@ -27,13 +34,13 @@ int game_develop(){
 
 	int turn{0};
 
-	while(turn++<150){	//10 turns
+	while(turn++<100){	//10 turns
 
 		int numberOfMales{0};		//clear the number of males and female bunnies capable of reproduction
 		femaleBunnies.clear();
 
 		for(auto it=listOfBunny.begin();it!=listOfBunny.end();it++){	//loop the list of bunnies
-			it->print();
+			//it->print();
 			it->grow();
 
 			if(it->getAge() == 10 && (it->evilBunny()==false)){
@@ -60,9 +67,8 @@ int game_develop(){
 				temp_list.push_back(child);
 			}
 		}
-
+		listOfBunny.splice(temp_list.end(), temp_list);	//append the temp list to the main bunnies list.
 	}
-	listOfBunny.splice(temp_list.end(), temp_list);	//append the temp list to the main bunnies list.
 
 	return 0;
 

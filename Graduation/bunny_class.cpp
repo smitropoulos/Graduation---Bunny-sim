@@ -19,49 +19,49 @@ std::vector<std::string> sex{"Male","Female"};
 
 //remember, size() returns the base 1 size e.g. [0,1,2]size() =3 but there is no 3rd element!
 
-bunny::bunny():_sex(sex[randomIntGen(0, uint(sex.size())-1)]),_colour(colours[randomIntGen(0, uint(colours.size())-1)]),_age(0){
-	if (_sex=="Male"){
-		_name =bunnyNamesMale[randomIntGen(0, uint(bunnyNamesMale.size())-1)];
+bunny::bunny():m_sex(sex[randomIntGen(0, uint(sex.size())-1)]),m_colour(colours[randomIntGen(0, uint(colours.size())-1)]),m_age(0){
+	if (m_sex=="Male"){
+		m_name =bunnyNamesMale[randomIntGen(0, uint(bunnyNamesMale.size())-1)];
 	}
-	else if( _sex=="Female"){
-		_name =bunnyNamesFemale[randomIntGen(0, uint(bunnyNamesFemale.size())-1)];
+	else if( m_sex=="Female"){
+		m_name =bunnyNamesFemale[randomIntGen(0, uint(bunnyNamesFemale.size())-1)];
 	}
-	_radioactive_mutant_vampire_bunny = randomIntGen(0,10) >= 2 ? true : false;	//condition ? result_if_true : result_if_false
+	m_radioactivem_mutantm_vampirem_bunny = randomIntGen(0,10) >= 2 ? true : false;	//condition ? resultm_ifm_true : resultm_ifm_false
 
 }
 
 bunny::bunny(const bunny& other){
-	_age=other._age;
-	_sex=other._sex;
-	_colour=other._colour;
-	_name=other._name;
-	_radioactive_mutant_vampire_bunny=other._radioactive_mutant_vampire_bunny;
+	m_age=other.m_age;
+	m_sex=other.m_sex;
+	m_colour=other.m_colour;
+	m_name=other.m_name;
+	m_radioactivem_mutantm_vampirem_bunny=other.m_radioactivem_mutantm_vampirem_bunny;
 }
 
 void bunny::print(){
-	std::cout<<_sex<<_name<<_colour<<_age<<std::endl;
+	std::cout<<m_sex<<" Bunny "<<m_name<<" of colour "<<m_colour<<" at age "<<m_age<<std::endl;
 }
 
 void bunny::grow(){
-	_age++;
+	m_age++;
 }
 unsigned int bunny::getAge(){
-	return _age;
+	return m_age;
 }
 std::string bunny::getSex(){
-	return _sex;
+	return m_sex;
 }
 
 bunny::~bunny(){}
 
 bool bunny::evilBunny(){
-	return _radioactive_mutant_vampire_bunny;
+	return m_radioactivem_mutantm_vampirem_bunny;
 }
 
 void bunny::setColour(std::string colour){
-	_colour=colour;
+	m_colour=colour;
 }
 
 std::string bunny::getColour(){
-	return _colour;
+	return m_colour;
 }
