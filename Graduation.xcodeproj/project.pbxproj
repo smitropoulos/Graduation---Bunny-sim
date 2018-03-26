@@ -11,6 +11,7 @@
 		7D72138820684F190044A7D3 /* bunny_class.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D72138620684F190044A7D3 /* bunny_class.cpp */; };
 		7D72138B206855A20044A7D3 /* random_gen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D721389206855A20044A7D3 /* random_gen.cpp */; };
 		7D72138E2068DE620044A7D3 /* game_init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D72138C2068DE620044A7D3 /* game_init.cpp */; };
+		7D7D44AB2068FFB1003E0CA2 /* game_develop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D7D44A92068FFB1003E0CA2 /* game_develop.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,8 @@
 		7D72138A206855A20044A7D3 /* random_gen.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = random_gen.hpp; sourceTree = "<group>"; };
 		7D72138C2068DE620044A7D3 /* game_init.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game_init.cpp; sourceTree = "<group>"; };
 		7D72138D2068DE620044A7D3 /* game_init.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game_init.hpp; sourceTree = "<group>"; };
+		7D7D44A92068FFB1003E0CA2 /* game_develop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game_develop.cpp; sourceTree = "<group>"; };
+		7D7D44AA2068FFB1003E0CA2 /* game_develop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game_develop.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,9 +71,11 @@
 			children = (
 				7D72138620684F190044A7D3 /* bunny_class.cpp */,
 				7D72138720684F190044A7D3 /* bunny_class.hpp */,
-				7D72137F20684E820044A7D3 /* main.cpp */,
+				7D7D44A92068FFB1003E0CA2 /* game_develop.cpp */,
+				7D7D44AA2068FFB1003E0CA2 /* game_develop.hpp */,
 				7D72138C2068DE620044A7D3 /* game_init.cpp */,
 				7D72138D2068DE620044A7D3 /* game_init.hpp */,
+				7D72137F20684E820044A7D3 /* main.cpp */,
 				7D721389206855A20044A7D3 /* random_gen.cpp */,
 				7D72138A206855A20044A7D3 /* random_gen.hpp */,
 			);
@@ -134,6 +139,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D7D44AB2068FFB1003E0CA2 /* game_develop.cpp in Sources */,
 				7D72138B206855A20044A7D3 /* random_gen.cpp in Sources */,
 				7D72138020684E820044A7D3 /* main.cpp in Sources */,
 				7D72138820684F190044A7D3 /* bunny_class.cpp in Sources */,

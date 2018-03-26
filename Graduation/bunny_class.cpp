@@ -37,3 +37,11 @@ void bunny::print(){
 void bunny::grow(){
 	_age++;
 }
+unsigned int bunny::getAge(){
+	return _age;
+}
+std::string bunny::getSex(){
+	return _sex;
+}
+
+bunny::~bunny(){}

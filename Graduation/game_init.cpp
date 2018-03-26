@@ -17,7 +17,6 @@ std::list<bunny> game_init(){
 	for(int i=0;i<5;i++){
 		bunny bi;
 		listOfBunny.push_back(bi);
-		listOfBunny.size();
 	}
 	return listOfBunny;
 }

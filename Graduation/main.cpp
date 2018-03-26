@@ -8,15 +8,23 @@
 
 #include <iostream>
 #include "bunny_class.hpp"
-#include "game_init.hpp"
+#include "game_develop.hpp"
+#include <chrono>
+#include <thread>
 
 int main(int argc, const char * argv[]) {
 
-	auto list=game_init();
-	list.size();
-		//colours.size()
+	unsigned int round{0};
+	//std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-		//std::cout<< colours.size() <<std::endl;
+	game_develop();
+	
 	return 0;
 
 }
+
+
+
+
+
+
