@@ -16,28 +16,32 @@ bunny bunnyReproduce(bunny& female){
 
 int game_develop(){
 
-	std::list<bunny> list=game_init();
+	std::list<bunny> listOfBunny{};
 	std::list<bunny> temp_list{};
 	std::vector<bunny> femaleBunnies;
 
+	for(int i=0;i<5;i++){
+		listOfBunny.push_back(bunny());
+	}
+
+
 	int turn{0};
 
-	while(turn++<15){	//10 turns
+	while(turn++<150){	//10 turns
 
 		int numberOfMales{0};		//clear the number of males and female bunnies capable of reproduction
 		femaleBunnies.clear();
 
-		for(auto it=list.begin();it!=list.end();it++){	//loop the list of bunnies
+		for(auto it=listOfBunny.begin();it!=listOfBunny.end();it++){	//loop the list of bunnies
 			it->print();
 			it->grow();
 
-
 			if(it->getAge() == 10 && (it->evilBunny()==false)){
 					//delete *it;
-				it=list.erase(it);		//point the iterator to the list element in front of the one we deleted.
+				it=listOfBunny.erase(it);		//point the iterator to the list element in front of the one we deleted.
 			}
-			else if(it->getAge() == 50 && (it->evilBunny()==true)){
-				it=list.erase(it);		//point the iterator to the list element in front of the one we deleted.
+			else if(it->getAge() == 50 && (it->evilBunny())){
+				it=listOfBunny.erase(it);		//point the iterator to the list element in front of the one we deleted.
 			}
 
 			if (it->getAge()>=2 && it->getSex()=="Female" && (it->evilBunny()==false)){	//Put the females in a stack for coitus.
@@ -58,7 +62,7 @@ int game_develop(){
 		}
 
 	}
-	list.splice(temp_list.end(), temp_list);	//append the temp list to the main bunnies list.
+	listOfBunny.splice(temp_list.end(), temp_list);	//append the temp list to the main bunnies list.
 
 	return 0;
 

@@ -35,6 +35,7 @@ bunny::bunny(const bunny& other){
 	_sex=other._sex;
 	_colour=other._colour;
 	_name=other._name;
+	_radioactive_mutant_vampire_bunny=other._radioactive_mutant_vampire_bunny;
 }
 
 void bunny::print(){
