@@ -33,6 +33,9 @@ public:
 	unsigned int getAge();
 	std::string getSex();
 	bool evilBunny();
+	void setColour(std::string colour);
+	std::string getColour();
+
 };
 
 #endif /* bunny_class_hpp */

@@ -8,9 +8,10 @@
 #include <stack>
 
 
-bunny coitusProduct(bunny& female,int n){
-	bunny child(female,n);
-	return child;
+bunny coitusProduct(bunny& female){
+	bunny *child=new bunny();
+	child->setColour(female.getColour());
+	return *child;
 }
 
 
@@ -42,13 +43,13 @@ int game_develop(){
 
 		for (numberOfMales;numberOfMales>0;numberOfMales--){
 			for (unsigned long i=femaleBunnies.size();i>0;i--){
-				bunny child=coitusProduct(femaleBunnies[i],1);
+				bunny child=coitusProduct(femaleBunnies[i]);
 
 				list.push_back(child);
 			}
 		}
 		femaleBunnies.clear();
-
+		
 	}
 
 
