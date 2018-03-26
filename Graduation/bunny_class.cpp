@@ -30,8 +30,27 @@ bunny::bunny():_sex(sex[randomIntGen(0, uint(sex.size())-1)]),_colour(colours[ra
 
 }
 
+bunny::bunny(const bunny& mom,int n):_sex(sex[randomIntGen(0, uint(sex.size())-1)]){
+	if (_sex=="Male"){
+		_name =bunnyNamesMale[randomIntGen(0, uint(bunnyNamesMale.size())-1)];
+	}
+	else if( _sex=="Female"){
+		_name =bunnyNamesFemale[randomIntGen(0, uint(bunnyNamesFemale.size())-1)];
+	}
+	_radioactive_mutant_vampire_bunny = randomIntGen(0,10) >= 2 ? true : false;	//condition ? result_if_true : result_if_false
+	_age=0;
+	_colour=mom._colour;
+}
+
+bunny::bunny(const bunny& other){
+	_age=other._age;
+	_sex=other._sex;
+	_colour=other._colour;
+	_name=other._name;
+}
+
 void bunny::print(){
-	std::cout<<_sex<<_name<<_colour<<std::endl;
+	std::cout<<_sex<<_name<<_colour<<_age<<std::endl;
 }
 
 void bunny::grow(){
@@ -45,3 +64,7 @@ std::string bunny::getSex(){
 }
 
 bunny::~bunny(){}
+
+bool bunny::evilBunny(){
+	return _radioactive_mutant_vampire_bunny;
+}

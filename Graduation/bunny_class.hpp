@@ -24,11 +24,15 @@ private:
 	bool _radioactive_mutant_vampire_bunny{};
 public:
 	bunny();
+	bunny(const bunny& other);
+	bunny(const bunny& mom,int n);
 	~bunny();
+
 	void print();
 	void grow();
 	unsigned int getAge();
 	std::string getSex();
+	bool evilBunny();
 };
 
 #endif /* bunny_class_hpp */

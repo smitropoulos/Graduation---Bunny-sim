@@ -1,54 +1,62 @@
-	//
-	//  game_develop.cpp
-	//  Graduation
-	//
-	//  Created by Stefanos Mitropoulos on 26/03/2018.
-	//  Copyright © 2018 Stefanos Mitropoulos. All rights reserved.
-	//
+
 #include "bunny_class.hpp"
 #include "game_init.hpp"
 #include <chrono>
 #include <thread>
 #include <stdio.h>
 #include "game_develop.hpp"
+#include <stack>
 
-bunny coitusProduct(const bunny& male,const bunny& female){
-	return 
+
+bunny coitusProduct(bunny& female,int n){
+	bunny child(female,n);
+	return child;
 }
 
 
 int game_develop(){
 
 	std::list<bunny> list=game_init();
-	std::list<bunny> femaleBunnies;
+	std::vector<bunny> femaleBunnies;
+	int turn{0};
 
-	while (list.size()>0){
-		list.size();
+	while(turn++<10){	//10 turns
+
 		int numberOfMales{0};
-		int numberOfFemales{0};
 
-		for(std::list<bunny>::iterator it=list.begin();it!=list.end();it++){
+		for(auto it=list.begin();it!=list.end();it++){	//loop the list of bunnies
+			it->print();
 			it->grow();
-			if(it->getAge() > 3){
+			if(it->getAge() == 10){
 				it=list.erase(it);		//point the iterator to the list element in front of the one we deleted.
 			}
 
-				//Check if there are enough bunnies to have coitus, ^^
-			if(it->getSex()=="Male" && it->getAge()>=2){
-				numberOfMales++;
+			if (it->getAge()>=2 && it->getSex()=="Female" && (it->evilBunny()==false)){	//Put the females in a stack for coitus.
+				femaleBunnies.push_back(*it);		//	!CAREFUL! Push_back makes a copy. Declare a copy constructor for the class.
+				//std::cout<<"Females size: "<<femaleBunnies.size()<<std::endl;
 			}
-			else if (it->getSex()=="Female" && it->getAge()>=2){
-				numberOfFemales++;
-				femaleBunnies.push_back(*it);
-			}
-
-
-			
-				std::cout<<femaleBunnies.size()<<std::endl;
-
+			else if(it->getAge()>=2 && it->getSex()=="Male" && (it->evilBunny()==false))
+				numberOfMales++;		//each turn this resets.
+			//std::cout<<"males: "<<numberOfMales<<std::endl;
 		}
-		
+
+		for (numberOfMales;numberOfMales>0;numberOfMales--){
+			for (unsigned long i=femaleBunnies.size();i>0;i--){
+				bunny child=coitusProduct(femaleBunnies[i],1);
+
+				list.push_back(child);
+			}
+		}
+		femaleBunnies.clear();
+
 	}
+
+
+
+	std::cout<<list.size()<<std::endl;
+
+
 	return 0;
+
 }
 
