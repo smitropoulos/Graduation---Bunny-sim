@@ -8,54 +8,57 @@
 #include <stack>
 
 
-bunny coitusProduct(bunny& female){
-	bunny *child=new bunny();
-	child->setColour(female.getColour());
-	return *child;
+bunny bunnyReproduce(bunny& female){
+	bunny child;
+	child.setColour(female.getColour());
+	return child;
 }
-
 
 int game_develop(){
 
 	std::list<bunny> list=game_init();
+	std::list<bunny> temp_list{};
 	std::vector<bunny> femaleBunnies;
+
 	int turn{0};
 
-	while(turn++<10){	//10 turns
+	while(turn++<15){	//10 turns
 
-		int numberOfMales{0};
+		int numberOfMales{0};		//clear the number of males and female bunnies capable of reproduction
+		femaleBunnies.clear();
 
 		for(auto it=list.begin();it!=list.end();it++){	//loop the list of bunnies
 			it->print();
 			it->grow();
-			if(it->getAge() == 10){
+
+
+			if(it->getAge() == 10 && (it->evilBunny()==false)){
+					//delete *it;
+				it=list.erase(it);		//point the iterator to the list element in front of the one we deleted.
+			}
+			else if(it->getAge() == 50 && (it->evilBunny()==true)){
 				it=list.erase(it);		//point the iterator to the list element in front of the one we deleted.
 			}
 
 			if (it->getAge()>=2 && it->getSex()=="Female" && (it->evilBunny()==false)){	//Put the females in a stack for coitus.
 				femaleBunnies.push_back(*it);		//	!CAREFUL! Push_back makes a copy. Declare a copy constructor for the class.
-				//std::cout<<"Females size: "<<femaleBunnies.size()<<std::endl;
+													//std::cout<<"Females size: "<<femaleBunnies.size()<<std::endl;
 			}
 			else if(it->getAge()>=2 && it->getSex()=="Male" && (it->evilBunny()==false))
 				numberOfMales++;		//each turn this resets.
-			//std::cout<<"males: "<<numberOfMales<<std::endl;
+										//std::cout<<"males: "<<numberOfMales<<std::endl;
 		}
 
-		for (numberOfMales;numberOfMales>0;numberOfMales--){
-			for (unsigned long i=femaleBunnies.size();i>0;i--){
-				bunny child=coitusProduct(femaleBunnies[i]);
-
-				list.push_back(child);
+		for (int j=0;j<numberOfMales;j++){
+			for (int i=0;i<femaleBunnies.size();i++){
+				femaleBunnies[i].print();
+				bunny child=bunnyReproduce(femaleBunnies[i]);
+				temp_list.push_back(child);
 			}
 		}
-		femaleBunnies.clear();
-		
+
 	}
-
-
-
-	std::cout<<list.size()<<std::endl;
-
+	list.splice(temp_list.end(), temp_list);	//append the temp list to the main bunnies list.
 
 	return 0;
 
