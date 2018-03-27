@@ -26,7 +26,7 @@ bunny::bunny():m_sex(sex[randomIntGen(0, uint(sex.size())-1)]),m_colour(colours[
 	else if( m_sex=="Female"){
 		m_name =bunnyNamesFemale[randomIntGen(0, uint(bunnyNamesFemale.size())-1)];
 	}
-	m_radioactive_mutant_vampire_bunny = randomIntGen(0,10) >= 2 ? true : false;	//condition ? resultm_ifm_true : resultm_ifm_false
+	m_radioactive_mutant_vampire_bunny = randomIntGen(0,10) >= 8 ? true : false;	//condition ? resultm_ifm_true : resultm_ifm_false
 
 }
 
