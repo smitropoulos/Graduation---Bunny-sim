@@ -21,6 +21,13 @@ bunny bunnyReproduce(bunny& female){
 	return child;
 }
 
+void theCulling(std::list<bunny>& listOfBunnies){
+//TO-DO FIND A WAY TO SHUFFLE.
+//ITERATE BACKWARDS TO GET RID OF THE TEMP LIST!!
+	std::random_shuffle(listOfBunnies.begin(), listOfBunnies.end());
+
+}
+
 int game_develop(){
 
 	std::list<bunny> listOfBunny{};
