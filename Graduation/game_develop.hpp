@@ -11,7 +11,7 @@
 #include <iostream>
 
 
-int game_develop();
+int game_develop(unsigned int turns);
 
 
 #endif /* game_develop_hpp */

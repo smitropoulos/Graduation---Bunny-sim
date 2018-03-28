@@ -14,10 +14,9 @@
 
 int main(int argc, const char * argv[]) {
 
-	unsigned int round{0};
 	//std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-	game_develop();
+	game_develop(10);
 	
 	return 0;
 
