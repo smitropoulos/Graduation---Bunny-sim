@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "game_develop.hpp"
 #include <stack>
+#include <algorithm>
 
 
 bunny bunnyReproduce(bunny& female){
@@ -21,17 +22,16 @@ bunny bunnyReproduce(bunny& female){
 	return child;
 }
 
-void theCulling(std::list<bunny>& listOfBunnies){
-		//TO-DO FIND A WAY TO SHUFFLE.
+void theCulling(std::vector<bunny>& listOfBunnies){
 		//TO-DO seed the engine once
 
-		//std::random_shuffle(listOfBunnies.begin(), listOfBunnies.end());
+		std::random_shuffle(listOfBunnies.begin(), listOfBunnies.end());
 	
 }
 
 int game_develop(unsigned int turns){
 	
-	std::list<bunny> listOfBunny{};
+	std::vector<bunny> listOfBunny{};
 	std::vector<bunny> femaleBunnies;
 	
 	for(int i=0;i<5;i++){
