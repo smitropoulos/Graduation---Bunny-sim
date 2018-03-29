@@ -22,23 +22,29 @@ bunny bunnyReproduce(bunny& female){
 	return child;
 }
 
-void theCulling(std::vector<bunny>& listOfBunnies){
-		//TO-DO seed the engine once
 
-		std::random_shuffle(listOfBunnies.begin(), listOfBunnies.end());
-	
+void theCulling(std::list<bunny>& listOfBunnies, int limit){
+
+	for (int j=0;j<limit;j++){
+		std::list<bunny>::iterator i=listOfBunnies.begin();
+		int in=randomIntGen(0, listOfBunnies.size()-1);
+		std::advance(i,in);
+		listOfBunnies.erase(i);
+	}
 }
+
+
 
 int game_develop(unsigned int turns){
 	
-	std::vector<bunny> listOfBunny{};
-	std::vector<bunny> femaleBunnies;
+	std::list<bunny> listOfBunny{};
+	std::vector<bunny> femaleBunnies{};
 	
 	for(int i=0;i<5;i++){
 		listOfBunny.push_back(bunny());
 	}
 	
-		
+
 	for(int turn=0;turn<turns;turn++){	//10 turns
 		
 		int numberOfMales{0};		//clear the number of males and female bunnies capable of reproduction
@@ -46,10 +52,15 @@ int game_develop(unsigned int turns){
 		
 		
 		for(auto it=--listOfBunny.end();it!=--listOfBunny.begin();--it){	//loop the list of bunnies
-			it->grow();
-			//it->print();
 
-			if (it->evilBunny()==false){
+			//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+			it->print();
+			it->grow();
+
+
+				///=======================================start of list loop========================================
+
+			if (it->evilBunny()==false ){
 				if(it->getAge() == 10){
 					it=listOfBunny.erase(it);		//point the iterator to the list element in front of the one we deleted.
 					std::cout<<"Aw, a bunny died!"<<std::flush;
@@ -68,11 +79,19 @@ int game_develop(unsigned int turns){
 			}
 			else{
 				if (it->getAge() == 50){
-				it=listOfBunny.erase(it);		//point the iterator to the list element in front of the one we deleted.
-				std::cout<<"Thank God!A radioactive mutant vampire bunny died!"<<std::flush;
-				it->print();
+					it=listOfBunny.erase(it);		//point the iterator to the list element in front of the one we deleted.
+					std::cout<<"Thank God!A radioactive mutant vampire bunny died!"<<std::flush;
+					it->print();
+				}
 			}
+
+				///=======================================end of list loop========================================
+
+			if (listOfBunny.size()>=1000){
+				theCulling(listOfBunny,500);
 			}
+
+
 			for (int j=0;j<numberOfMales;j++){
 				for (int i=0;i<femaleBunnies.size();i++){
 					femaleBunnies[i].print();
@@ -80,6 +99,13 @@ int game_develop(unsigned int turns){
 					listOfBunny.push_back(child);
 				}//for
 			}//for
+
+
+
+
+
+
+
 		}//for list
 	}//for	turns
 	return 0;
