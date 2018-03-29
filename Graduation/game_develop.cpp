@@ -39,13 +39,14 @@ int game_develop(unsigned int turns){
 	
 	std::list<bunny> listOfBunny{};
 	std::vector<bunny> femaleBunnies{};
-	
+
+		// Initial bunnies!
 	for(int i=0;i<5;i++){
 		listOfBunny.push_back(bunny());
 	}
 	
 
-	for(int turn=0;turn<turns;turn++){	//10 turns
+	for(int turn=0;turn<turns;turn++){	//10 turns minimum to test for deaths!
 		
 		int numberOfMales{0};		//clear the number of males and female bunnies capable of reproduction
 		femaleBunnies.clear();
@@ -53,8 +54,8 @@ int game_develop(unsigned int turns){
 		
 		for(auto it=--listOfBunny.end();it!=--listOfBunny.begin();--it){	//loop the list of bunnies
 
-			//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-			it->print();
+				//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+				//it->print();		//Debugging
 			it->grow();
 
 
@@ -81,33 +82,36 @@ int game_develop(unsigned int turns){
 				if (it->getAge() == 50){
 					it=listOfBunny.erase(it);		//point the iterator to the list element in front of the one we deleted.
 					std::cout<<"Thank God!A radioactive mutant vampire bunny died!"<<std::flush;
-					it->print();
+				}
+				else{
+						//Copy the iterator and try to increment it to finf a non RMV bunny.
+					auto tempiter = it;
+					do{
+						tempiter++;
+					}while(tempiter->evilBunny()==false);
+						//Infect the poor bunny!
+					it->infectBunny(*tempiter);
 				}
 			}
+		}//for
 
-				///=======================================end of list loop========================================
 
-			if (listOfBunny.size()>=1000){
-				theCulling(listOfBunny,500);
+
+			///=======================================Pop control========================================
+
+		for (int j=0;j<numberOfMales;j++){
+			for (int i=0;i<femaleBunnies.size();i++){
+				bunny child=bunnyReproduce(femaleBunnies[i]);
+				listOfBunny.push_back(child);
+
+				if (listOfBunny.size()>=1000){
+					theCulling(listOfBunny,listOfBunny.size()/2);
+				}
 			}
-
-
-			for (int j=0;j<numberOfMales;j++){
-				for (int i=0;i<femaleBunnies.size();i++){
-					femaleBunnies[i].print();
-					bunny child=bunnyReproduce(femaleBunnies[i]);
-					listOfBunny.push_back(child);
-				}//for
-			}//for
-
-
-
-
-
-
-
-		}//for list
+		}
+		std::cout<<"####################END OF TURN "<<turn+1<<"########################"<<std::endl;
 	}//for	turns
+	
 	return 0;
 
 }//main
