@@ -17,8 +17,10 @@ int turn=0;
 
 void theCullingOnDemand()
 {
-	while(turn<10){
+	while(1){
 		char ss;
+		if(turn==10)
+			break;
 		std::lock_guard<std::mutex> lock(cinMutex);
 		ss=std::cin.get();
 		if (ss=='k')
@@ -82,9 +84,10 @@ int game_develop(unsigned int turns){
 
 			if (it->evilBunny()==false ){
 				if(it->getAge() == 10){
-					it=listOfBunny.erase(it);        //point the iterator to the list element in front of the one we deleted.
 					std::cout<<"Aw, a bunny died!"<<std::flush;
 					it->print();
+					it=listOfBunny.erase(it);        //point the iterator to the list element in front of the one we deleted.
+
 				}
 				else if(it->getAge()>=2 && it->getSex()=="Female")
 					{
@@ -138,7 +141,7 @@ int game_develop(unsigned int turns){
 		}
 
 		if(cull){
-			theCulling(listOfBunny,listOfBunny.size()/2);
+			theCulling(listOfBunny, listOfBunny.size()/2);
 			std::cout<<"A CULLING HAS BEEN ORDERED!\n Bunny population is "<<listOfBunny.size()<<std::endl;
 			cull=false;
 		}
@@ -146,8 +149,8 @@ int game_develop(unsigned int turns){
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
 	}//for turns
-
-	return 0;
+	std::cout<<"Press a button to exit"<<std::endl;
 	charGetter.join();
+	return 0;
 }//main
 
