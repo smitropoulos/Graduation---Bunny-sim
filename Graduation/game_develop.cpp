@@ -113,24 +113,34 @@ int game_develop(unsigned int turns){
 				}
 			}
 			if(cull){
-				cull=false;
-				break;
+				continue;
 			}
 		}//for
 
 
 
 			///=======================================Pop control========================================
-
 		for (int j=0;j<numberOfMales;j++){
 			for (int i=0;i<femaleBunnies.size();i++){
 				bunny child=bunnyReproduce(femaleBunnies[i]);
 				listOfBunny.push_back(child);
 
+					//Auto culling!
 				if (listOfBunny.size()>=1000){
 					theCulling(listOfBunny,listOfBunny.size()/2);
 				}
+
+				if(!cull)	//check if a culling is in order!
+					break;
 			}
+			if(!cull)	//check if a culling is in order!
+				break;
+		}
+
+		if(cull){
+			theCulling(listOfBunny,listOfBunny.size()/2);
+			std::cout<<"A CULLING HAS BEEN ORDERED!\n The number of bunnies is "<<listOfBunny.size()<<std::endl;
+			cull=false;
 		}
 		std::cout<<"####################END OF TURN "<<turn+1<<"########################"<<std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
@@ -138,5 +148,6 @@ int game_develop(unsigned int turns){
 	}//for turns
 
 	return 0;
+	charGetter.join();
 }//main
 
