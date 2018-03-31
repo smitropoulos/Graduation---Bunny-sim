@@ -65,7 +65,7 @@ int game_develop(unsigned int turns){
 
 	std::thread charGetter(theCullingOnDemand);
 
-	for(turn;turn<turns;turn++){    //10 turns minimum to test for deaths!
+	for(;turn<turns;turn++){    //10 turns minimum to test for deaths!
 
 		int numberOfMales{0};        //clear the number of males and female bunnies capable of reproduction
 		femaleBunnies.clear();
@@ -120,8 +120,13 @@ int game_develop(unsigned int turns){
 
 
 			///=======================================Pop control========================================
+
 		for (int j=0;j<numberOfMales;j++){
+			if(cull)	//check if a culling is in order!
+				break;
 			for (int i=0;i<femaleBunnies.size();i++){
+				if(cull)	//check if a culling is in order!
+					break;
 				bunny child=bunnyReproduce(femaleBunnies[i]);
 				listOfBunny.push_back(child);
 
@@ -129,17 +134,12 @@ int game_develop(unsigned int turns){
 				if (listOfBunny.size()>=1000){
 					theCulling(listOfBunny,listOfBunny.size()/2);
 				}
-
-				if(!cull)	//check if a culling is in order!
-					break;
 			}
-			if(!cull)	//check if a culling is in order!
-				break;
 		}
 
 		if(cull){
 			theCulling(listOfBunny,listOfBunny.size()/2);
-			std::cout<<"A CULLING HAS BEEN ORDERED!\n The number of bunnies is "<<listOfBunny.size()<<std::endl;
+			std::cout<<"A CULLING HAS BEEN ORDERED!\n Bunny population is "<<listOfBunny.size()<<std::endl;
 			cull=false;
 		}
 		std::cout<<"####################END OF TURN "<<turn+1<<"########################"<<std::endl;
