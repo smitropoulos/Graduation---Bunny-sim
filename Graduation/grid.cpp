@@ -23,7 +23,7 @@ void updateGrid(std::vector<std::vector<char>>& grid,int X,int Y,char V){
 }
 
 	//"draw" the grid position with the given sprite
-void updateGrid(std::vector<std::vector<char>>& grid,std::pair<int,int> position,char V){
+void updateGrid(std::vector<std::vector<char>>& grid, std::pair<int,int> position, char V){
 	grid[position.first][position.second]=V;
 }
 

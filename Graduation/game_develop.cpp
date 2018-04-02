@@ -18,8 +18,8 @@ std::mutex cinMutex;
 std::atomic_bool cull;
 
 	//Grid size
-int const gridX=50;
-int const gridY=50;
+int const gridX=30;
+int const gridY=10;
 
 int turn=0;
 
@@ -58,8 +58,8 @@ std::set<std::pair<int, int> > & initPositionSet(){
 	std::set<std::pair<int, int> > static freePositionsSet;
 	std::pair<int, int> k;
 
-	for (int i=0;i<gridX;i++){
-		for (int j=0;j<gridY;j++){
+	for (int i=0;i<gridY;i++){
+		for (int j=0;j<gridX;j++){
 			k.first=i;
 			k.second=j;
 			freePositionsSet.insert(k);
@@ -203,7 +203,8 @@ int game_develop(unsigned int turns){
 			std::cout<<"A CULLING HAS BEEN ORDERED!\n Bunny population is "<<listOfBunny.size()<<std::endl;
 			cull=false;
 		}
-		std::cout<<"####################END OF TURN "<<turn+1<<"########################"<<std::endl;
+		std::cout<<"####################END OF TURN "<<turn+1<<"########################\n"<<std::endl;
+
 		printGrid(grid);
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 		
