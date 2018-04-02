@@ -7,16 +7,25 @@
 #include "game_develop.hpp"
 #include <stack>
 #include <algorithm>
+#include "grid.hpp"
+#include <set>
 
+	///TO-DO LIST
+	//add back to the set of pairs when a bunny is erased.
 
+	//needed to manage other threads
 std::mutex cinMutex;
-int rounds;
 std::atomic_bool cull;
+
+	//Grid size
+int const gridX=50;
+int const gridY=50;
+
 int turn=0;
 
-
+	//reduce the population of bunnies on demand flag
 void theCullingOnDemand()
-{
+{//to be ran on a seperate thread
 	while(1){
 		char ss;
 		if(turn==10)
@@ -28,6 +37,7 @@ void theCullingOnDemand()
 	}
 }
 
+	//the bunnies reproduce..naturally..
 bunny bunnyReproduce(bunny& female){
 	bunny child;
 	child.setColour(female.getColour());
@@ -42,28 +52,70 @@ bunny bunnyReproduce(bunny& female){
 	return child;
 }
 
+	//return a random pair of position integers for the grid.
+std::set<std::pair<int, int> > & initPositionSet(){
+		//construct a set of all the possible positions the bunnies can take on the grid.
+	std::set<std::pair<int, int> > static freePositionsSet;
+	std::pair<int, int> k;
+
+	for (int i=0;i<gridX;i++){
+		for (int j=0;j<gridY;j++){
+			k.first=i;
+			k.second=j;
+			freePositionsSet.insert(k);
+		}
+	}
+	return freePositionsSet;
+}
+
+
+	//update bunny position with a valid move
+int randomBunnyMove (std::set<std::pair<int, int>>& freePositionsSet,bunny& bun){
+		///find and pop,else try random move
+	while(1 && freePositionsSet.size()!=0){
+		int x = randomIntGen(0, gridX);
+		int y =randomIntGen(0, gridY);
+		std::pair<int, int> pos={x,y};
+		if (auto flag=freePositionsSet.find(pos) != freePositionsSet.end()){
+			freePositionsSet.erase(pos);
+			bun.setPosition(pos);
+			return 0;
+		}
+	}
+	return -1;
+}
+
+
+
 	//Population control method
-void theCulling(std::list<bunny>& listOfBunnies, int limit){
+void theCulling(std::list<bunny>& listOfBunnies, int limit,std::set<std::pair<int, int> >&  freePositionsSet){
 
 	for (int j=0;j<limit;j++){
 		std::list<bunny>::iterator i=listOfBunnies.begin();
 		int in=randomIntGen(0, listOfBunnies.size()-1);
 		std::advance(i,in);
+		freePositionsSet.insert(i->getPosition());		//return the position of this bunny to be erased to the set of positions
 		listOfBunnies.erase(i);
 	}
 }
 
 
+	////////////////#########################Main Method################################?????????
 
 int game_develop(unsigned int turns){
 
 	std::list<bunny> listOfBunny{};
 	std::vector<bunny> femaleBunnies{};
+	auto grid = initGrid(gridX, gridY);
+	auto positionList = initPositionSet();
 
 		// Initial bunnies!
 	for(int i=0;i<5;i++){
-		listOfBunny.push_back(bunny());
+		bunny bun;
+		randomBunnyMove(positionList,bun);
+		listOfBunny.push_back(bun);
 	}
+
 
 	std::thread charGetter(theCullingOnDemand);
 
@@ -77,7 +129,10 @@ int game_develop(unsigned int turns){
 
 				//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 				//it->print();        //Debugging
+
 			it->grow();
+			it->updateSprite();											//update the sprite for the bunny
+			updateGrid(grid, it->getPosition(),it->getSprite());		//update the grid point with the appropriate value
 
 
 				///=======================================start of list loop========================================
@@ -86,6 +141,7 @@ int game_develop(unsigned int turns){
 				if(it->getAge() == 10){
 					std::cout<<"Aw, a bunny died!"<<std::flush;
 					it->print();
+					positionList.insert(it->getPosition());	//return the position of this bunny to be erased to the set of positions
 					it=listOfBunny.erase(it);        //point the iterator to the list element in front of the one we deleted.
 
 				}
@@ -102,6 +158,7 @@ int game_develop(unsigned int turns){
 			}
 			else{
 				if (it->getAge() == 50){
+					positionList.insert(it->getPosition());	//return the position of this bunny to be erased to the set of positions
 					it=listOfBunny.erase(it);        //point the iterator to the list element in front of the one we deleted.
 					std::cout<<"Thank God!A radioactive mutant vampire bunny died!"<<std::flush;
 				}
@@ -131,22 +188,25 @@ int game_develop(unsigned int turns){
 				if(cull)	//check if a culling is in order!
 					break;
 				bunny child=bunnyReproduce(femaleBunnies[i]);
+				randomBunnyMove(positionList,child);		//update child's position with a random move
 				listOfBunny.push_back(child);
 
 					//Auto culling!
 				if (listOfBunny.size()>=1000){
-					theCulling(listOfBunny,listOfBunny.size()/2);
+					theCulling(listOfBunny, listOfBunny.size()/2, positionList);
 				}
 			}
 		}
 
 		if(cull){
-			theCulling(listOfBunny, listOfBunny.size()/2);
+			theCulling(listOfBunny, listOfBunny.size()/2, positionList);
 			std::cout<<"A CULLING HAS BEEN ORDERED!\n Bunny population is "<<listOfBunny.size()<<std::endl;
 			cull=false;
 		}
 		std::cout<<"####################END OF TURN "<<turn+1<<"########################"<<std::endl;
+		printGrid(grid);
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+		
 
 	}//for turns
 	std::cout<<"Press a button to exit"<<std::endl;

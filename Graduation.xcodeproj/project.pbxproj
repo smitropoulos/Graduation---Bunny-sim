@@ -12,6 +12,7 @@
 		7D72138B206855A20044A7D3 /* random_gen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D721389206855A20044A7D3 /* random_gen.cpp */; };
 		7D72138E2068DE620044A7D3 /* game_init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D72138C2068DE620044A7D3 /* game_init.cpp */; };
 		7D7D44AB2068FFB1003E0CA2 /* game_develop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D7D44A92068FFB1003E0CA2 /* game_develop.cpp */; };
+		7DAC0003206FF1F70024197D /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DAC0001206FF1F70024197D /* grid.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +38,8 @@
 		7D72138D2068DE620044A7D3 /* game_init.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game_init.hpp; sourceTree = "<group>"; };
 		7D7D44A92068FFB1003E0CA2 /* game_develop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game_develop.cpp; sourceTree = "<group>"; };
 		7D7D44AA2068FFB1003E0CA2 /* game_develop.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game_develop.hpp; sourceTree = "<group>"; };
+		7DAC0001206FF1F70024197D /* grid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = grid.cpp; sourceTree = "<group>"; };
+		7DAC0002206FF1F70024197D /* grid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = grid.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,8 @@
 				7D7D44AA2068FFB1003E0CA2 /* game_develop.hpp */,
 				7D72138C2068DE620044A7D3 /* game_init.cpp */,
 				7D72138D2068DE620044A7D3 /* game_init.hpp */,
+				7DAC0001206FF1F70024197D /* grid.cpp */,
+				7DAC0002206FF1F70024197D /* grid.hpp */,
 				7D72137F20684E820044A7D3 /* main.cpp */,
 				7D721389206855A20044A7D3 /* random_gen.cpp */,
 				7D72138A206855A20044A7D3 /* random_gen.hpp */,
@@ -108,7 +113,7 @@
 		7D72137420684E820044A7D3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Stefanos Mitropoulos";
 				TargetAttributes = {
 					7D72137B20684E820044A7D3 = {
@@ -144,6 +149,7 @@
 				7D72138020684E820044A7D3 /* main.cpp in Sources */,
 				7D72138820684F190044A7D3 /* bunny_class.cpp in Sources */,
 				7D72138E2068DE620044A7D3 /* game_init.cpp in Sources */,
+				7DAC0003206FF1F70024197D /* grid.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +170,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -171,6 +178,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -219,6 +227,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -226,6 +235,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
