@@ -104,7 +104,7 @@ void bunny::updateSprite(){
 	else if(m_age>1 && m_sex=="Male"){
 		m_sprite='M';
 	}
-	else if(m_age>1 && m_sex=="Male"){
+	else if(m_age>1 && m_sex=="Female"){
 		m_sprite='F';
 	}
 }

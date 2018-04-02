@@ -1,6 +1,5 @@
 
 #include "bunny_class.hpp"
-#include "game_init.hpp"
 #include <chrono>
 #include <thread>
 #include <stdio.h>
@@ -9,6 +8,7 @@
 #include <algorithm>
 #include "grid.hpp"
 #include <set>
+#include <list>
 
 	///TO-DO LIST
 	//add back to the set of pairs when a bunny is erased.
@@ -18,10 +18,11 @@ std::mutex cinMutex;
 std::atomic_bool cull;
 
 	//Grid size
-int const gridX=30;
-int const gridY=10;
+int const gridX=80;
+int const gridY=80;
 
 int turn=0;
+int delay=1; //1 second
 
 	//reduce the population of bunnies on demand flag
 void theCullingOnDemand()
@@ -48,7 +49,7 @@ bunny bunnyReproduce(bunny& female){
 		std::cout<<"THE DEVIL! "<<std::flush;
 		child.print();
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));		//Wait a second between announcements.
+	std::this_thread::sleep_for(std::chrono::milliseconds(delay));		//Wait a second between announcements.
 	return child;
 }
 
@@ -73,14 +74,13 @@ std::set<std::pair<int, int> > & initPositionSet(){
 int randomBunnyMove (std::set<std::pair<int, int>>& freePositionsSet,bunny& bun){
 		///find and pop,else try random move
 	while(1 && freePositionsSet.size()!=0){
-		int x = randomIntGen(0, gridX);
-		int y =randomIntGen(0, gridY);
-		std::pair<int, int> pos={x,y};
-		if (auto flag=freePositionsSet.find(pos) != freePositionsSet.end()){
-			freePositionsSet.erase(pos);
-			bun.setPosition(pos);
-			return 0;
-		}
+
+		auto setBegin=freePositionsSet.begin();
+		advance(setBegin,randomIntGen(0, freePositionsSet.size()));		//advancing the position of the iterator to a random element inside the set
+		bun.setPosition(*setBegin);
+		freePositionsSet.erase(*setBegin);
+		return 0;
+
 	}
 	return -1;
 }
@@ -203,10 +203,10 @@ int game_develop(unsigned int turns){
 			std::cout<<"A CULLING HAS BEEN ORDERED!\n Bunny population is "<<listOfBunny.size()<<std::endl;
 			cull=false;
 		}
-		std::cout<<"####################END OF TURN "<<turn+1<<"########################\n"<<std::endl;
+		std::cout<<"\n####################END OF TURN "<<turn+1<<"########################\n"<<std::endl;
 
 		printGrid(grid);
-		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(2*delay));
 		
 
 	}//for turns
