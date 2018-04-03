@@ -11,7 +11,7 @@
 #include <list>
 
 	///TO-DO LIST
-	//add back to the set of pairs when a bunny is erased.
+
 
 	//needed to manage other threads
 std::mutex cinMutex;
@@ -54,9 +54,9 @@ bunny bunnyReproduce(bunny& female){
 }
 
 	//return a random pair of position integers for the grid.
-std::set<std::pair<int, int> > & initPositionSet(){
+std::set<std::pair<int, int>>& initPositionSet(){
 		//construct a set of all the possible positions the bunnies can take on the grid.
-	std::set<std::pair<int, int> > static freePositionsSet;
+	std::set<std::pair<int, int>> static freePositionsSet;
 	std::pair<int, int> k;
 
 	for (int i=0;i<gridY;i++){
@@ -76,7 +76,7 @@ int randomBunnyMove (std::set<std::pair<int, int>>& freePositionsSet,bunny& bun)
 	while(1 && freePositionsSet.size()!=0){
 
 		auto setBegin=freePositionsSet.begin();
-		advance(setBegin,randomIntGen(0, freePositionsSet.size()));		//advancing the position of the iterator to a random element inside the set
+		advance(setBegin,static_cast<unsigned int>(randomIntGen(0, static_cast<unsigned int>(freePositionsSet.size()))));		//advancing the position of the iterator to a random element inside the set. This way we cannot ever get outside the set's boundaries / improved performance by a lot.
 		bun.setPosition(*setBegin);
 		freePositionsSet.erase(*setBegin);
 		return 0;
@@ -92,7 +92,7 @@ void theCulling(std::list<bunny>& listOfBunnies, int limit,std::set<std::pair<in
 
 	for (int j=0;j<limit;j++){
 		std::list<bunny>::iterator i=listOfBunnies.begin();
-		int in=randomIntGen(0, listOfBunnies.size()-1);
+		int in=randomIntGen(0, static_cast<unsigned int>(listOfBunnies.size()-1));
 		std::advance(i,in);
 		freePositionsSet.insert(i->getPosition());		//return the position of this bunny to be erased to the set of positions
 		listOfBunnies.erase(i);
@@ -193,13 +193,13 @@ int game_develop(unsigned int turns){
 
 					//Auto culling!
 				if (listOfBunny.size()>=1000){
-					theCulling(listOfBunny, listOfBunny.size()/2, positionList);
+					theCulling(listOfBunny, static_cast<unsigned int>(listOfBunny.size()/2), positionList);
 				}
 			}
 		}
 
 		if(cull){
-			theCulling(listOfBunny, listOfBunny.size()/2, positionList);
+			theCulling(listOfBunny, static_cast<unsigned int>(listOfBunny.size()/2), positionList);
 			std::cout<<"A CULLING HAS BEEN ORDERED!\n Bunny population is "<<listOfBunny.size()<<std::endl;
 			cull=false;
 		}
