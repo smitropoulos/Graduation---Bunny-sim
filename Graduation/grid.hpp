@@ -11,6 +11,10 @@
 
 #include <stdio.h>
 #include <vector>
+#include "bunny_class.hpp"
+#include <iostream>
+#include <set>
+#include "random_gen.hpp"
 
 std::vector<std::vector<char>>& initGrid(int gridX, int gridY);
 void updateGrid(std::vector<std::vector<char>>& grid,int X,int Y,char V);
