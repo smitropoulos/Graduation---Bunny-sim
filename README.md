@@ -1,4 +1,4 @@
-# Bunny simulation!
+# Radioactive Mutant Vampire Bunny simulation!
 
 Write a program that creates a linked list of bunny objects.
 Each bunny object must have
