@@ -41,3 +41,5 @@ Modify the program so that radioactive mutant vampire bunnies only convert bunni
 Modify the program so that new babies are born in an empty random adjacent square next to the mother bunny. (if no empty square exits then the baby bunny isn't born)
 
 ★★★★★ Modify the program so that it saves each turn to a file and can play back at accelearted speed all subsequent turns.
+
+EDITS: The program has parameters for the delays, the number of turns and a flag to enable printing (inside game_develop.cpp)
