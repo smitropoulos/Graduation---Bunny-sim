@@ -11,7 +11,7 @@
 #include <iostream>
 
 
-int game_develop(unsigned int turns);
+int game_develop(unsigned int turns=10,unsigned int numberOfInitialBunnies=5);
 
 
 #endif /* game_develop_hpp */

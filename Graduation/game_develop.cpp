@@ -25,9 +25,7 @@ int const gridY=20;
 bool printFlag=false;
 
 int turn=0;
-int delay=0; //1 second default
-
-int numberOfInitialBunnies=5;
+int delay=100; //1 second default
 
 void theCullingOnDemand(){
 		//call the culling method on demand.
@@ -192,7 +190,7 @@ void theCulling(std::list<bunny>& listOfBunnies, int limit,std::set<std::pair<in
 
 	////////////////######################### Main Method ################################////////////////
 
-int game_develop(unsigned int turns){
+int game_develop(unsigned int turns,unsigned int numberOfInitialBunnies){
 
 	std::list<bunny> listOfBunny{};
 	std::vector<bunny> femaleBunnies{};
@@ -220,7 +218,7 @@ int game_develop(unsigned int turns){
 
 			it->grow();		//age the bunny
 			it->updateSprite();		//update the sprite for the bunny
-
+			*it;
 			positionList.insert(it->getPosition());	//return the position of this bunny to be erased to the set of positions
 			updateGrid(grid, it->getPosition(),'.');	//paint the position of the bunny before the move to the default.
 
@@ -259,7 +257,7 @@ int game_develop(unsigned int turns){
 						std::cout<<"Thank God!A radioactive mutant vampire bunny died!"<<std::flush;
 				}
 				else{
-						//Copy the iterator and try to increment it to finδ a non RMV bunny.
+						//Copy the iterator and try to increment it to find a non RMV bunny.
 					auto tempiter = it;
 					do{
 						tempiter++;

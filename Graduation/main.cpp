@@ -16,7 +16,7 @@ int main(int argc, const char * argv[]) {
 
     //std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-    game_develop(10);
+    game_develop(100);
 	std::cout<<"\n#################### 	THE END  ########################\n"<<std::endl;
     return 0;
 
