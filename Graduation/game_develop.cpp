@@ -11,7 +11,9 @@
 
 
 	///TO-DO LIST
-	//convert the availablemoves vector to std map
+	//search the bunnies list for a bunny with the position taken from infectNeighbourBunny (test)
+//add contraints to the search for positions in infectNeighbourBunny (test)
+//investigate immobile bunnies
 	//add infect rules and mother next to child rules
 
 	//needed in order to manage other threads
@@ -55,12 +57,13 @@ bunny bunnyReproduce(bunny& female){
 			std::cout<<"THE DEVIL! "<<std::flush;
 			child.print();}
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(delay));		//Wait a second between announcements.
+	if(printFlag)
+	std::this_thread::sleep_for(std::chrono::milliseconds(delay));        //Wait a second between announcements.
 	return child;
 }
 
 std::set<std::pair<int, int>>& initPositionSet(){
-		//construct a set of all the possible positions the bunnies can take on the grid. Returns a set	std::set<std::pair<int, int>>
+		//construct a set of all the possible positions the bunnies can take on the grid. Returns a set    std::set<std::pair<int, int>>
 	std::set<std::pair<int, int>> static freePositionsSet;
 	std::pair<int, int> k;
 
@@ -74,6 +77,52 @@ std::set<std::pair<int, int>>& initPositionSet(){
 	return freePositionsSet;
 }
 
+
+std::pair<int,int> randomNeighbourBunnyPosition(bunny& evilBunny, std::set<std::pair<int, int>> gridPositions,int gridX, int gridY, std::vector<std::vector<char>> grid){
+
+	std::map< char, std::pair<int,int> > neighbours;
+
+		///new modeling of the kernel and neighbours. Assume qwerty keyboard, S is the kernel, W is up, X is down etc.
+		//the below ifs try to find the neighbours of the kernel bunny.If the surrounding positions are taken and they are not filled with the evilbunny sprite, 'X', then a pair of the neighbour's orientation and coordinates is added to a map.
+
+	if (evilBunny.getPosition().first!=0 && gridPositions.find({evilBunny.getPosition().first-1 , evilBunny.getPosition().second})==gridPositions.end() && grid[evilBunny.getPosition().first-1][evilBunny.getPosition().second]!='X'){
+		neighbours.insert(make_pair('a',std::make_pair(evilBunny.getPosition().first-1 , evilBunny.getPosition().second)));
+	}
+	if (evilBunny.getPosition().first!=gridX && gridPositions.find({evilBunny.getPosition().first+1 , evilBunny.getPosition().second})==gridPositions.end() && grid[evilBunny.getPosition().first+1][evilBunny.getPosition().second]!='X'){
+		neighbours.insert(make_pair('d',std::make_pair(evilBunny.getPosition().first+1 , evilBunny.getPosition().second)));
+	}
+	if (evilBunny.getPosition().first!=gridX && evilBunny.getPosition().first!=gridY && gridPositions.find({evilBunny.getPosition().first+1,evilBunny.getPosition().second+1})==gridPositions.end() && grid[evilBunny.getPosition().first+1][evilBunny.getPosition().second+1]!='X'){
+		neighbours.insert(make_pair('c',std::make_pair(evilBunny.getPosition().first+1 , evilBunny.getPosition().second+1)));
+	}
+	if (evilBunny.getPosition().first!=0 && evilBunny.getPosition().first!=gridY &&gridPositions.find({evilBunny.getPosition().first-1,evilBunny.getPosition().second+1})==gridPositions.end() && grid[evilBunny.getPosition().first-1][evilBunny.getPosition().second+1]!='X'){
+		neighbours.insert(make_pair('z',std::make_pair(evilBunny.getPosition().first-1 , evilBunny.getPosition().second+1)));
+	}
+	if (evilBunny.getPosition().first!=gridY && gridPositions.find({evilBunny.getPosition().first,evilBunny.getPosition().second+1})==gridPositions.end() && grid[evilBunny.getPosition().first][evilBunny.getPosition().second+1]!='X'){
+		neighbours.insert(make_pair('x',std::make_pair(evilBunny.getPosition().first, evilBunny.getPosition().second+1)));
+	}
+	if (evilBunny.getPosition().first!=gridX && evilBunny.getPosition().first!=0 && gridPositions.find({evilBunny.getPosition().first+1,evilBunny.getPosition().second-1})==gridPositions.end() && grid[evilBunny.getPosition().first+1][evilBunny.getPosition().second-1]!='X'){
+		neighbours.insert(make_pair('r',std::make_pair(evilBunny.getPosition().first+1 , evilBunny.getPosition().second-1)));
+	}
+	if (evilBunny.getPosition().first!=0 && evilBunny.getPosition().first!=0 && gridPositions.find({evilBunny.getPosition().first-1,evilBunny.getPosition().second-1})==gridPositions.end() && grid[evilBunny.getPosition().first-1][evilBunny.getPosition().second-1]!='X'){
+		neighbours.insert(make_pair('q',std::make_pair(evilBunny.getPosition().first-1 , evilBunny.getPosition().second-1)));
+	}
+	if (evilBunny.getPosition().second!=0 && gridPositions.find({evilBunny.getPosition().first,evilBunny.getPosition().second-1})==gridPositions.end() && grid[evilBunny.getPosition().first][evilBunny.getPosition().second-1]!='X'){
+		neighbours.insert(make_pair('w',std::make_pair(evilBunny.getPosition().first , evilBunny.getPosition().second-1)));
+	}
+
+	auto randomNeighbourNumber=randomIntGen(0,static_cast<unsigned int>(neighbours.size()-1));
+
+	if (neighbours.size()==0)        //check that there are available neighbours around.
+		return {-1,-1};
+
+	auto neighboursIterator = neighbours.begin();    //move the iterator to the begining
+	std::advance(neighboursIterator,randomNeighbourNumber);    //advance the iterator a random number of positions [0,map.size())
+
+	return neighboursIterator->second;
+
+}
+
+
 std::map< char, std::pair<int,int> > returnAvailableMoves(bunny& bun,std::set<std::pair<int, int>> gridPositions,int gridX, int gridY){
 
 	/*
@@ -85,9 +134,7 @@ std::map< char, std::pair<int,int> > returnAvailableMoves(bunny& bun,std::set<st
 	 Returns: std::map< char, std::pair<int,int> > map of the moves and the coordinates needed
 	 */
 
-
-	//std::vector<char> availableMoves{'d','l','r','u'};		//all the possible moves here.
-															//In case the bunny is next to a border or an O position is not in the list of free moves, a move is automatically blocked.
+		//In case the bunny is next to a border or an O position is not in the list of free moves, a move is automatically blocked.
 
 
 	std::map< char, std::pair<int,int> > availableMoves;
@@ -97,15 +144,11 @@ std::map< char, std::pair<int,int> > returnAvailableMoves(bunny& bun,std::set<st
 	availableMoves.insert(make_pair('l',std::make_pair(bun.getPosition().first-1 , bun.getPosition().second)));
 	availableMoves.insert(make_pair('r',std::make_pair(bun.getPosition().first+1 , bun.getPosition().second)));
 
-
-
-
-
 	/*
 	 X
 	 _________
 	 |___O___|
-	 Y	 O___k___O
+	 Y     O___k___O
 	 |___O___|
 
 	 Using this we can determine what we need to check given that K is the kernel bunny and O are the possible movements.
@@ -147,12 +190,12 @@ int moveBunnyAtRandom(bunny& bun, std::map< char, std::pair<int,int> >& availabl
 
 	auto randomMoveNumber=randomIntGen(0,static_cast<unsigned int>(availableMoves.size()-1));
 
-	if (availableMoves.size()==0)		//check that there are available moves to make.
+	if (availableMoves.size()==0)        //check that there are available moves to make.
 		return -1;
 
-	auto availableMovesIterator = availableMoves.begin();	//move the iterator to the begining
-	std::advance(availableMovesIterator,randomMoveNumber);	//advance the iterator a random number of positions [0,map.size())
-	bun.setPosition(availableMovesIterator->second);		//set the bunny's position to that move's mapping pair of coordinates
+	auto availableMovesIterator = availableMoves.begin();    //move the iterator to the begining
+	std::advance(availableMovesIterator,randomMoveNumber);    //advance the iterator a random number of positions [0,map.size())
+	bun.setPosition(availableMovesIterator->second);        //set the bunny's position to that move's mapping pair of coordinates
 
 	return 0;
 
@@ -164,9 +207,9 @@ int initialRandomBunnyMovement (std::set<std::pair<int, int>>& freePositionsSet,
 
 	while(1 && freePositionsSet.size()!=0){
 		auto setBegin=freePositionsSet.begin();
-		advance(setBegin,static_cast<unsigned int>(randomIntGen(0, static_cast<unsigned int>(freePositionsSet.size()))));		//advancing the position of the iterator to a random element inside the set. This way we cannot ever get outside the set's boundaries / improved performance by a lot.
+		advance(setBegin,static_cast<unsigned int>(randomIntGen(0, static_cast<unsigned int>(freePositionsSet.size()))));        //advancing the position of the iterator to a random element inside the set. This way we cannot ever get outside the set's boundaries / improved performance by a lot.
 		bun.setPosition(*setBegin);
-		freePositionsSet.erase(*setBegin);	//remove the new position from the freepositions list
+		freePositionsSet.erase(*setBegin);    //remove the new position from the freepositions list
 		return 0;
 	}
 	return -1;
@@ -181,7 +224,7 @@ void theCulling(std::list<bunny>& listOfBunnies, int limit,std::set<std::pair<in
 		std::list<bunny>::iterator i=listOfBunnies.begin();
 		int in=randomIntGen(0, static_cast<unsigned int>(listOfBunnies.size()-1));
 		std::advance(i,in);
-		freePositionsSet.insert(i->getPosition());		//return the position of this bunny to be erased to the set of positions
+		freePositionsSet.insert(i->getPosition());        //return the position of this bunny to be erased to the set of positions
 		listOfBunnies.erase(i);
 	}
 }
@@ -194,18 +237,18 @@ int game_develop(unsigned int turns,unsigned int numberOfInitialBunnies){
 
 	std::list<bunny> listOfBunny{};
 	std::vector<bunny> femaleBunnies{};
-	auto grid = initGrid(gridX, gridY);
+	std::vector<std::vector<char>> grid = initGrid(gridX, gridY);
 	auto positionList = initPositionSet();
 
 		// Initial bunnies!
 	for(int i=0;i<numberOfInitialBunnies;i++){
 		bunny bun;
-		initialRandomBunnyMovement(positionList,bun);	//make the bunnies take random-valid positions
+		initialRandomBunnyMovement(positionList,bun);    //make the bunnies take random-valid positions
 		listOfBunny.push_back(bun);
 	}
 
 
-	std::thread charGetter(theCullingOnDemand);		//run a thread to manage the keypress events
+	std::thread charGetter(theCullingOnDemand);        //run a thread to manage the keypress events
 
 	for(;turn<turns;turn++){    //10 turns minimum to test for deaths!
 
@@ -216,16 +259,16 @@ int game_develop(unsigned int turns,unsigned int numberOfInitialBunnies){
 		for(auto it=--listOfBunny.end();it!=--listOfBunny.begin();--it){    //loop the list of bunnies
 
 
-			it->grow();		//age the bunny
-			it->updateSprite();		//update the sprite for the bunny
+			it->grow();        //age the bunny
+			it->updateSprite();        //update the sprite for the bunny
 			*it;
-			positionList.insert(it->getPosition());	//return the position of this bunny to be erased to the set of positions
-			updateGrid(grid, it->getPosition(),'.');	//paint the position of the bunny before the move to the default.
+			positionList.insert(it->getPosition());    //return the position of this bunny to be erased to the set of positions
+			updateGrid(grid, it->getPosition(),'.');    //paint the position of the bunny before the move to the default.
 
 			auto availMoves = returnAvailableMoves(*it, positionList, gridX, gridY);
 			moveBunnyAtRandom(*it,availMoves);
-			updateGrid(grid, it->getPosition(),it->getSprite());		//update the grid point with the appropriate value
-			positionList.erase(it->getPosition());	//erase the new position from the available positions list
+			updateGrid(grid, it->getPosition(),it->getSprite());        //update the grid point with the appropriate value
+			positionList.erase(it->getPosition());    //erase the new position from the available positions list
 
 				///=======================================start of list loop========================================
 
@@ -234,7 +277,7 @@ int game_develop(unsigned int turns,unsigned int numberOfInitialBunnies){
 					if(printFlag){
 						std::cout<<"Aw, a bunny died!"<<std::flush;
 						it->print();}
-					positionList.insert(it->getPosition());	//return the position of this bunny to be erased to the set of positions
+					positionList.insert(it->getPosition());    //return the position of this bunny to be erased to the set of positions
 					it=listOfBunny.erase(it);        //point the iterator to the list element in front of the one we deleted.
 
 				}
@@ -251,19 +294,24 @@ int game_develop(unsigned int turns,unsigned int numberOfInitialBunnies){
 			}
 			else{
 				if (it->getAge() == 50){
-					positionList.insert(it->getPosition());	//return the position of this bunny to be erased to the set of positions
+					positionList.insert(it->getPosition());    //return the position of this bunny to be erased to the set of positions
 					it=listOfBunny.erase(it);        //point the iterator to the list element in front of the one we deleted.
 					if(printFlag)
 						std::cout<<"Thank God!A radioactive mutant vampire bunny died!"<<std::flush;
 				}
 				else{
-						//Copy the iterator and try to increment it to find a non RMV bunny.
-					auto tempiter = it;
-					do{
-						tempiter++;
-					}while(tempiter->evilBunny()==false);
-						//Infect the poor bunny!
-					it->infectBunny(*tempiter);
+					auto neighbourPair=randomNeighbourBunnyPosition(*it, positionList, gridX, gridY, grid);
+					auto poorBunny=std::find_if(listOfBunny.begin(), listOfBunny.end(), [&] (bunny const& b) {
+						return b.m_position == neighbourPair;});
+					it->infectBunny(*poorBunny);
+//
+//						//Copy the iterator and try to increment it to find a non RMV bunny.
+//					auto tempiter = it;
+//					do{
+//						tempiter++;
+//					}while(tempiter->evilBunny()==false);
+//						//Infect the poor bunny!
+//					it->infectBunny(*tempiter);
 				}
 			}
 			if(cull){
@@ -276,13 +324,13 @@ int game_develop(unsigned int turns,unsigned int numberOfInitialBunnies){
 			///=======================================Pop control========================================
 
 		for (int j=0;j<numberOfMales;j++){
-			if(cull)	//check if a culling is in order!
+			if(cull)    //check if a culling is in order!
 				break;
 			for (int i=0;i<femaleBunnies.size();i++){
-				if(cull)	//check if a culling is in order!
+				if(cull)    //check if a culling is in order!
 					break;
 				bunny child=bunnyReproduce(femaleBunnies[i]);
-				initialRandomBunnyMovement(positionList,child);		//update child's position with a new random position
+				initialRandomBunnyMovement(positionList,child);        //update child's position with a new random position
 				listOfBunny.push_back(child);
 
 					//Auto culling!
@@ -303,7 +351,7 @@ int game_develop(unsigned int turns,unsigned int numberOfInitialBunnies){
 
 		printGrid(grid);
 		std::this_thread::sleep_for(std::chrono::milliseconds(2*delay));
-		
+
 
 	}//for turns
 	std::cout<<"Press a button to exit"<<std::endl;

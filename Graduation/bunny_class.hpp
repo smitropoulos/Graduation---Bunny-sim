@@ -28,8 +28,9 @@ private:
 
 	bool m_radioactive_mutant_vampire_bunny{false};
 
-	std::pair<int, int> m_position{};
 public:
+	std::pair<int, int> m_position{};
+
 	bunny();
 	bunny(const bunny& other);
 	~bunny();
