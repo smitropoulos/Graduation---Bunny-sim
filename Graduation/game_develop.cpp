@@ -27,7 +27,7 @@ int const gridY=20;
 bool printFlag=false;
 
 int turn=0;
-int delay=100; //1 second default
+int delay=500; //1 second default
 
 void theCullingOnDemand(){
 		//call the culling method on demand.
@@ -77,7 +77,6 @@ std::set<std::pair<int, int>>& initPositionSet(){
 	return freePositionsSet;
 }
 
-
 std::pair<int,int> randomNeighbourBunnyPosition(bunny& evilBunny, std::set<std::pair<int, int>> gridPositions,int gridX, int gridY, std::vector<std::vector<char>> grid){
 
 	std::map< char, std::pair<int,int> > neighbours;
@@ -121,7 +120,6 @@ std::pair<int,int> randomNeighbourBunnyPosition(bunny& evilBunny, std::set<std::
 	return neighboursIterator->second;
 
 }
-
 
 std::map< char, std::pair<int,int> > returnAvailableMoves(bunny& bun,std::set<std::pair<int, int>> gridPositions,int gridX, int gridY){
 
@@ -214,8 +212,6 @@ int initialRandomBunnyMovement (std::set<std::pair<int, int>>& freePositionsSet,
 	}
 	return -1;
 }
-
-
 
 void theCulling(std::list<bunny>& listOfBunnies, int limit,std::set<std::pair<int, int> >&  freePositionsSet){
 		//reduce the population of bunnies on demand flag by interrupting the flow of the programme and halfing the bunnies.
